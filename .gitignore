@@ -35,8 +35,5 @@ coverage/
 # Ignore PyInstaller spec file
 main.spec
 
-# Ignore config files
-config.toml
-
 # Ignore pycache directory
 __pycache__/
