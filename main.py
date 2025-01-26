@@ -9,6 +9,7 @@ from autozan import run
 CONFIGFILE = "config.toml" # 定义配置文件名
 
 def init_config():
+    '''初始化配置文件'''
     if not os.path.exists(CONFIGFILE): # 如果配置文件不存在则创建一个默认的配置文件
         config = document()
 
@@ -24,6 +25,7 @@ def init_config():
     return config
 
 def read_config(config):
+    '''读取配置文件'''
     return config.value
 
 if __name__ == "__main__":
