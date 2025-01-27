@@ -5,11 +5,10 @@ from tkinter import messagebox
 import maliang
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchWindowException, NoSuchElementException, WebDriverException
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-automation'])
-options.add_argument("--headless")
+# options.add_argument("--headless")
 driver = None
 
 def run(qq: str, interval: int, loginmode: int | None, b2: maliang.Button):
@@ -32,12 +31,6 @@ def run(qq: str, interval: int, loginmode: int | None, b2: maliang.Button):
                     continue
             time.sleep(interval * 60)
             driver.refresh()
-    except NoSuchWindowException as e:
-        messagebox.showerror("错误", str(e))
-    except NoSuchElementException as e:
-        messagebox.showerror("错误", str(e))
-    except WebDriverException as e:
-        messagebox.showerror("错误", str(e))
     finally:
         driver.quit()
         b2.forget()

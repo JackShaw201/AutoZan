@@ -78,5 +78,5 @@ if __name__ == "__main__":
     b2 = maliang.Button(cv, (10, 350), size=(580, 40), text="暂停", command=lambda: stop(b2))
     b2.forget()
 
-    root.at_exit(lambda: config.save(input1.get(), input4.get(), input5.get(), sb.get()))
+    root.at_exit(lambda: (config.save(input1.get(), input4.get(), input5.get(), sb.get()), stop(b2)))
     root.mainloop()
