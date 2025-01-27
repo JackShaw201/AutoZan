@@ -12,7 +12,7 @@ class Config:
     def __init__(self):
         '''初始化配置文件'''
         if not os.path.exists(self.CONFIGFILE):
-            self.save("8888888888", 0)
+            self.save("8888888888", 2, 0)
         else:
             pass
 
@@ -22,7 +22,7 @@ class Config:
             doc = load(fp)
         return doc.item(key)
     
-    def save(self, qq: str, loginmode: int | None):
+    def save(self, qq: str, interval: int, loginmode: int | None):
         '''保存配置文件'''
         doc = document()
 
@@ -31,6 +31,7 @@ class Config:
         doc.add(comment("https://github.com/JackShaw201/autozan"))
 
         doc.add("qq", qq)
+        doc.add("interval", interval)
         doc.add("loginmode", loginmode)
 
         with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
@@ -47,17 +48,22 @@ if __name__ == "__main__":
     cv.place(width=800, height=600, x=0, y=0)
 
     # QQ号输入框
-    maliang.Text(cv, (10, 30), text="QQ号：", anchor="w")
-    input1 = maliang.InputBox(cv, (80, 10), size=(140, 40))
+    maliang.Text(cv, (10, 30), text="QQ 号：", anchor="w")
+    input1 = maliang.InputBox(cv, (90, 10), size=(140, 40))
     input1.append(config.item("qq"))
 
     # 密码输入框
-    maliang.Text(cv, (230, 30), text="密码：", anchor="w")
-    input2 = maliang.InputBox(cv, (290, 10), size=(300, 40), show="*")
+    maliang.Text(cv, (240, 30), text="密码：", anchor="w")
+    input2 = maliang.InputBox(cv, (300, 10), size=(290, 40), show="*")
 
     # Cookie 输入框
     maliang.Text(cv, (10, 80), text="Cookie：", anchor="w")
     input3 = maliang.InputBox(cv, (90, 60), size=(500, 40))
+
+    # 间隔输入框
+    maliang.Text(cv, (10, 130), text="间隔：", anchor="w")
+    input4 = maliang.SpinBox(cv, (70, 110), size=(80, 40), default=config.item("interval"))
+    maliang.Text(cv, (160, 130), text="分钟", anchor="w")
 
     # 登录方式选择
     maliang.Text(cv, (10, 315), text="登录方式：", anchor="w")
@@ -67,5 +73,5 @@ if __name__ == "__main__":
     b2 = maliang.Button(cv, (10, 350), size=(580, 40), text="暂停", command=lambda: stop(b2))
     b2.forget()
 
-    root.at_exit(lambda: config.save(input1.get(), sb.get()))
+    root.at_exit(lambda: config.save(input1.get(), input4.get(), sb.get()))
     root.mainloop()
