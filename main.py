@@ -4,7 +4,7 @@ import maliang
 from maliang import animation
 from tomlkit import document, comment, dump, load
 
-from autozan import run, stop
+from autozan import start, stop
 
 class Config:
     '''配置文件类'''
@@ -12,7 +12,7 @@ class Config:
     def __init__(self):
         '''初始化配置文件'''
         if not os.path.exists(self.CONFIGFILE):
-            self.save("8888888888", 2, 0)
+            self.save("8888888888", "2", "9", 0)
         else:
             pass
 
@@ -22,7 +22,7 @@ class Config:
             doc = load(fp)
         return doc.item(key)
     
-    def save(self, qq: str, interval: int, loginmode: int | None):
+    def save(self, qq: str, interval: str, number: str, loginmode: int | None):
         '''保存配置文件'''
         doc = document()
 
@@ -32,6 +32,7 @@ class Config:
 
         doc.add("qq", qq)
         doc.add("interval", interval)
+        doc.add("number", number)
         doc.add("loginmode", loginmode)
 
         with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
@@ -40,7 +41,7 @@ class Config:
 if __name__ == "__main__":
     config = Config()
 
-    root = maliang.Tk(size=(600, 400), title="QQ空间自动点赞 v0.1", icon="favicon.ico")
+    root = maliang.Tk(size=(600, 400), title="QQ空间自动点赞 v0.2", icon="favicon.ico")
     root.center()
     root.resizable(0, 0)
 
@@ -65,13 +66,17 @@ if __name__ == "__main__":
     input4 = maliang.SpinBox(cv, (70, 110), size=(80, 40), default=config.item("interval"))
     maliang.Text(cv, (160, 130), text="分钟", anchor="w")
 
+    # 条数输入框
+    maliang.Text(cv, (220, 130), text="条数：", anchor="w")
+    input5 = maliang.SpinBox(cv, (280, 110), size=(80, 40), default=config.item("number"))
+
     # 登录方式选择
     maliang.Text(cv, (10, 315), text="登录方式：", anchor="w")
     sb = maliang.SegmentedButton(cv, (110, 291), text=("快捷登录", "密码登录", "Cookie 登录"), default=config.item("loginmode"))
 
-    b1 = maliang.Button(cv, (10, 350), size=(580, 40), text="开始", command=lambda: run(input1.get(), sb.get(), b2))
+    b1 = maliang.Button(cv, (10, 350), size=(580, 40), text="开始", command=lambda: start(input1.get(), int(input4.get()), sb.get(), b2))
     b2 = maliang.Button(cv, (10, 350), size=(580, 40), text="暂停", command=lambda: stop(b2))
     b2.forget()
 
-    root.at_exit(lambda: config.save(input1.get(), input4.get(), sb.get()))
+    root.at_exit(lambda: config.save(input1.get(), input4.get(), input5.get(), sb.get()))
     root.mainloop()
