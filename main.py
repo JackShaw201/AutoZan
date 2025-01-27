@@ -41,7 +41,7 @@ class Config:
 if __name__ == "__main__":
     config = Config()
 
-    root = maliang.Tk(size=(600, 400), title="QQ空间自动点赞 v0.2", icon="favicon.ico")
+    root = maliang.Tk(size=(600, 400), title="QQ空间自动点赞 v0.2.1", icon="favicon.ico")
     root.center()
     root.resizable(0, 0)
 

@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-automation'])
-# options.add_argument("--headless")
+options.add_argument("--headless")
 driver = None
 
 def run(qq: str, interval: int, loginmode: int | None, b2: maliang.Button):
