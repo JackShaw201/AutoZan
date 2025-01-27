@@ -4,14 +4,15 @@ from tomlkit import document
 from tomlkit import comment
 from tomlkit import dump
 from tomlkit import load
-from autozan import run
-
-CONFIGFILE = "config.toml" # 定义配置文件名
+from autozan import run, stop
+from maliang import animation
 
 class Config:
+    '''配置文件类'''
+    CONFIGFILE = "config.toml" # 定义配置文件名
     def __init__(self):
         '''初始化配置文件'''
-        if not os.path.exists(CONFIGFILE): # 如果配置文件不存在则创建一个默认的配置文件
+        if not os.path.exists(self.CONFIGFILE): # 如果配置文件不存在则创建一个默认的配置文件
             doc = document()
 
             doc.add(comment("autozan config file"))
@@ -21,18 +22,18 @@ class Config:
             doc.add("qq", "8888888888") # 默认QQ号
             doc.add("loginmode", 0)
 
-            with open(CONFIGFILE, "w", encoding="utf-8") as fp:
+            with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
                 dump(doc, fp) # 写入配置文件
         else:
             pass
 
-    def item(self, key):
+    def item(self, key: str):
         '''解析配置文件'''
-        with open(CONFIGFILE, "r", encoding="utf-8") as fp:
+        with open(self.CONFIGFILE, "r", encoding="utf-8") as fp:
             doc = load(fp)
         return doc.item(key)
     
-    def save(self, qq, loginmode):
+    def save(self, qq: str, loginmode: int | None):
         '''保存配置文件'''
         doc = document()
 
@@ -43,7 +44,7 @@ class Config:
         doc.add("qq", qq)
         doc.add("loginmode", loginmode)
 
-        with open(CONFIGFILE, "w", encoding="utf-8") as fp:
+        with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
             dump(doc, fp) # 之所以将配置文件重新写入一遍，是因为 tomlkit 库似乎没有更新配置参数的方法
 
 if __name__ == "__main__":
@@ -73,7 +74,9 @@ if __name__ == "__main__":
     maliang.Text(cv, (10, 315), text="登录方式：", anchor="w")
     sb = maliang.SegmentedButton(cv, (110, 291), text=("快捷登录", "密码登录", "Cookie 登录"), default=config.item("loginmode"))
 
-    b = maliang.Button(cv, (270, 350), size=(60, 40), text="开始", command=lambda: run(input1.get(), sb.get()))
+    b1 = maliang.Button(cv, (10, 350), size=(580, 40), text="开始", command=lambda: run(input1.get(), sb.get(), b2))
+    b2 = maliang.Button(cv, (10, 350), size=(580, 40), text="暂停", command=lambda: stop(b2))
+    b2.forget()
 
     root.at_exit(lambda: config.save(input1.get(), sb.get()))
     root.mainloop()
