@@ -1,29 +1,18 @@
-import maliang
 import os
-from tomlkit import document
-from tomlkit import comment
-from tomlkit import dump
-from tomlkit import load
-from autozan import run, stop
+
+import maliang
 from maliang import animation
+from tomlkit import document, comment, dump, load
+
+from autozan import run, stop
 
 class Config:
     '''配置文件类'''
     CONFIGFILE = "config.toml" # 定义配置文件名
     def __init__(self):
         '''初始化配置文件'''
-        if not os.path.exists(self.CONFIGFILE): # 如果配置文件不存在则创建一个默认的配置文件
-            doc = document()
-
-            doc.add(comment("autozan config file"))
-            doc.add(comment("© 2025 by XShaw201"))
-            doc.add(comment("https://github.com/JackShaw201/autozan"))
-
-            doc.add("qq", "8888888888") # 默认QQ号
-            doc.add("loginmode", 0)
-
-            with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
-                dump(doc, fp) # 写入配置文件
+        if not os.path.exists(self.CONFIGFILE):
+            self.save("8888888888", 0)
         else:
             pass
 
@@ -45,7 +34,7 @@ class Config:
         doc.add("loginmode", loginmode)
 
         with open(self.CONFIGFILE, "w", encoding="utf-8") as fp:
-            dump(doc, fp) # 之所以将配置文件重新写入一遍，是因为 tomlkit 库似乎没有更新配置参数的方法
+            dump(doc, fp)
 
 if __name__ == "__main__":
     config = Config()

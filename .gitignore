@@ -37,3 +37,6 @@ main.spec
 
 # Ignore pycache directory
 __pycache__/
+
+# Ignore config files
+config.toml
