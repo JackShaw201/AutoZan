@@ -39,5 +39,8 @@ def start(qq: str, interval: int, loginmode: int | None, b2: maliang.Button):
     threading.Thread(target=run, args=(qq, interval, loginmode, b2)).start()
 
 def stop(b2: maliang.Button):
-    driver.quit()
-    b2.forget()
+    if driver:
+        driver.quit()
+        b2.forget()
+    else:
+        pass
