@@ -70,11 +70,14 @@ if __name__ == "__main__":
     maliang.Text(cv, (220, 130), text="条数：", anchor="w")
     input5 = maliang.SpinBox(cv, (280, 110), size=(80, 40), default=config.item("number"))
 
+    # 点赞统计
+    text1 = maliang.Text(cv, (20, 170), text="已为您的好友献出 0 个赞\n已刷新 0 次")
+
     # 登录方式选择
     maliang.Text(cv, (10, 315), text="登录方式：", anchor="w")
     sb = maliang.SegmentedButton(cv, (110, 291), text=("快捷登录", "密码登录", "Cookie 登录"), default=config.item("loginmode"))
 
-    b1 = maliang.Button(cv, (10, 350), size=(580, 40), text="开始", command=lambda: start(input1.get(), int(input4.get()), sb.get(), b2))
+    b1 = maliang.Button(cv, (10, 350), size=(580, 40), text="开始", command=lambda: start(input1.get(), int(input4.get()), sb.get(), b2, text1))
     b2 = maliang.Button(cv, (10, 350), size=(580, 40), text="暂停", command=lambda: stop(b2))
     b2.forget()
 
